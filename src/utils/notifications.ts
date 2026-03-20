@@ -51,13 +51,13 @@ export const sendEntrySavedNotification = async (
 ): Promise<void> => {
   try {
     await Notifications.scheduleNotificationAsync({
-      content: {
-        title: '✈️ Travel Entry Saved!',
-        body: `Your memory at "${address}" has been added to your diary.`,
-        sound: true,
-      },
-      trigger: null, // fires immediately
-    });
+  content: {
+    title: '✈️ Travel Entry Saved!',
+    body: `Your memory at "${address}" has been added to your diary.`,
+    // remove sound entirely
+  },
+  trigger: null,
+});
   } catch (e) {
     // Non-critical — entry is already saved, just log the error
     console.error('[Notifications] Failed to send:', e);

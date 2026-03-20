@@ -5,13 +5,18 @@ export interface TravelEntry {
   address: string;
   latitude: number;
   longitude: number;
-  createdAt: string; // ISO date string
+  createdAt: string;
+  title: string;
+  description: string;
+  photos: string[];           // Additional photos added in detail view
+  textAlign: 'left' | 'center' | 'right'; // Description text alignment
 }
 
 // ─── Navigation Stack Params ───────────────────────────────────────────────────
 export type RootStackParamList = {
   Home: undefined;
   AddEntry: undefined;
+  EntryDetail: { entryId: string }; // Pass only the ID, screen loads from storage
 };
 
 // ─── Theme Color Palette ───────────────────────────────────────────────────────

@@ -3,15 +3,30 @@ import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
+import { Image, View, Text, StyleSheet } from 'react-native';
 
 import { ThemeProvider, useTheme } from './src/context/ThemeContext';
 import HomeScreen from './src/screens/HomeScreen';
 import AddEntryScreen from './src/screens/AddEntryScreen';
+import EntryDetailScreen from './src/screens/EntryDetailScreen';
 import ThemeToggle from './src/components/ThemeToggle';
 import { setupNotifications } from './src/utils/notifications';
 import { RootStackParamList } from './src/types';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
+
+const HeaderTitle: React.FC<{ tintColor?: string }> = ({ tintColor }) => (
+  <View style={styles.headerTitleContainer}>
+    <Image
+      source={require('./assets/CircleLogo.png')}
+      style={styles.headerLogo}
+      resizeMode="contain"
+    />
+    <Text style={[styles.headerTitleText, { color: tintColor }]}>
+      Travel Diary
+    </Text>
+  </View>
+);
 
 const AppNavigator: React.FC = () => {
   const { theme, isDark } = useTheme();
@@ -42,7 +57,7 @@ const AppNavigator: React.FC = () => {
           name="Home"
           component={HomeScreen}
           options={{
-            title: '✈️ Travel Diary',
+            headerTitle: ({ tintColor }) => <HeaderTitle tintColor={tintColor} />,
             headerRight: () => <ThemeToggle />,
           }}
         />
@@ -55,11 +70,36 @@ const AppNavigator: React.FC = () => {
             headerBackTitle: 'Back',
           }}
         />
+        <Stack.Screen
+          name="EntryDetail"
+          component={EntryDetailScreen}
+          options={{
+            title: 'Entry Detail',
+            headerRight: () => <ThemeToggle />,
+            headerBackTitle: 'Diary',
+          }}
+        />
       </Stack.Navigator>
       <StatusBar style={isDark ? 'light' : 'dark'} />
     </NavigationContainer>
   );
 };
+
+const styles = StyleSheet.create({
+  headerTitleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  headerLogo: {
+    width: 28,
+    height: 28,
+  },
+  headerTitleText: {
+    fontWeight: '700',
+    fontSize: 18,
+  },
+});
 
 const App: React.FC = () => {
   useEffect(() => {
